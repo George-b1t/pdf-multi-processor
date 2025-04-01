@@ -7,15 +7,12 @@ import cors from 'cors';
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
-const pool = new Pool(5); // Ajuste o número de workers conforme necessário
+const pool = new Pool(3);
 
-// Servir arquivos estáticos
-app.use(express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Configuração do CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // URL do frontend
+  origin: 'http://localhost:3000',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
@@ -38,7 +35,6 @@ app.post('/upload', upload.array('pdfs'), async (req: Request, res: Response): P
     console.log('Jobs:', jobs);
     const results = await Promise.all(jobs.map(job => pool.processPDF(job)));
 
-    // Remover arquivos temporários de forma assíncrona
     console.log('Removendo arquivos temporários...');
     await Promise.all(files.map(file => fs.unlink(file.path)));
     console.log('Arquivos temporários removidos.');

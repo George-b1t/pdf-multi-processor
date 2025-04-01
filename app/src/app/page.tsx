@@ -155,7 +155,7 @@ export default function PDFProcessor() {
             )}
           </form>
         </CardContent>
-        <CardFooter className="flex justify-end gap-2 border-t bg-muted/10 py-4">
+        <CardFooter className="flex justify-end gap-2 border-t py-4">
           <Button type="submit" onClick={handleSubmit} disabled={loading || files.length === 0} className="gap-2">
             {loading ? (
               <>

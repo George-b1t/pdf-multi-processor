@@ -42,7 +42,6 @@ export class Pool {
 
   private getWorker(): Worker | null {
     if (this.activeWorkers.length < this.maxThreads) {
-      // Importante: após a compilação, o arquivo TypeScript se torna .js.
       const worker = new Worker(path.resolve(__dirname, 'pdf-worker.js'));
       this.activeWorkers.push(worker);
       return worker;
@@ -82,7 +81,6 @@ export class Pool {
     if (worker) {
       this.runWorker(worker, job, resolve, reject);
     } else {
-      // Se não houver worker disponível, re-adiciona o job na fila.
       this.queue.unshift({ job, resolve, reject });
     }
   }

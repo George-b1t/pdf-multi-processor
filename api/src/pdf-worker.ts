@@ -18,6 +18,11 @@ parentPort.on('message', async (job: PDFJob) => {
   try {
     const dataBuffer = await fs.readFile(job.filePath);
     const data = await pdf(dataBuffer);
+
+    if (Math.random() < 0.4) {
+      throw new Error('Erro simulado ao processar o PDF.');
+    }
+
     const result: PDFResult = {
       fileName: job.fileName,
       text: data.text,
