@@ -45,7 +45,11 @@ export class Pool {
 
   // Cria um novo Worker e configura seus handlers
   private createWorker(): void {
-    const workerPath = path.resolve(__dirname, '../src/pdf-worker.js');
+    const pathName = __dirname.includes('dist')
+      ? path.resolve(__dirname, '../src/pdf-worker.js')
+      : path.resolve(__dirname, '../dist/src/pdf-worker.js');
+
+    const workerPath = path.resolve(pathName);
     const worker = new Worker(workerPath);
 
     const workerData: WorkerData = {
