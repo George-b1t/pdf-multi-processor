@@ -30,12 +30,10 @@ interface WorkerData {
 }
 
 export class Pool {
-  private maxThreads: number;
   private queue: QueueItem[];
   private workers: WorkerData[];
 
   constructor(maxThreads: number) {
-    this.maxThreads = maxThreads;
     this.queue = [];
     this.workers = [];
 
@@ -47,7 +45,9 @@ export class Pool {
 
   // Cria um novo Worker e configura seus handlers
   private createWorker(): void {
-    const worker = new Worker(path.resolve(__dirname, 'pdf-worker.js'));
+    const workerPath = path.resolve(__dirname, '../dist/pdf-worker.js');
+    const worker = new Worker(workerPath);
+
     const workerData: WorkerData = {
       worker,
       busy: false,

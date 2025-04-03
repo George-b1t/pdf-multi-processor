@@ -25,8 +25,8 @@ parentPort.on('message', async (job: PDFJob) => {
   }
 
   // Simula um atraso de 1~5 segundos
-  // const randomDelay = Math.floor(Math.random() * 1000) + 1000;
-  // await new Promise(resolve => setTimeout(resolve, randomDelay));
+  const randomDelay = Math.floor(Math.random() * 1000) + 1000;
+  await new Promise(resolve => setTimeout(resolve, randomDelay));
 
   console.log(`[Worker:${process.pid}] Iniciando processamento de "${job.fileName}"...`);
 
@@ -35,8 +35,10 @@ parentPort.on('message', async (job: PDFJob) => {
     const dataBuffer = await fs.readFile(job.filePath);
     const data = await pdf(dataBuffer);
 
-    // Simula erro em ~40% das vezes
-    if (Math.random() < 0.1) {
+    // Simula erro em ~30% das vezes
+    if (Math.random() < 0.3) {
+      await fs.unlink(job.filePath); // Remove o arquivo temporário
+
       throw new Error('Erro simulado ao processar o PDF.');
     }
 

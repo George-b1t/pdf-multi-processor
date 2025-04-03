@@ -8,9 +8,8 @@ import { Pool } from './worker-pool'; // Importa a classe Pool do arquivo worker
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 
-// Cria a pool com 2 workers (ou quantos você quiser)
-const workerCount = Number(process.env.WORKER_COUNT) || 2;
-const pool = new Pool(workerCount);
+// Cria a pool com n workers
+const pool = new Pool(1);
 
 // Servir arquivos estáticos da pasta uploads, se precisar acessar publicamente
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -62,8 +61,13 @@ app.post('/upload', upload.array('pdfs'), async (req: Request, res: Response): P
   }
 });
 
-// Inicia servidor Express
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Inicia o servidor se estiver executando diretamente
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
+export { app };
+
