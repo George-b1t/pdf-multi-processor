@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tsc && node dist/server.js",
+    "dev": "npx tsc && node dist/src/server.js",
     "test": "jest --forceExit"
   },
   "keywords": [],
